@@ -1,13 +1,13 @@
-import { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
+
+import type { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
 
 import { Flex } from '../../../foundation/components/Flex';
 import { Image } from '../../../foundation/components/Image';
 import { Text } from '../../../foundation/components/Text';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
 import { getImageUrl } from '../../../lib/image/getImageUrl';
-import { useBook } from '../../book/hooks/useBook';
 
 const _Wrapper = styled(Link)`
   display: grid;
@@ -44,17 +44,17 @@ const _AvatarWrapper = styled.div`
 `;
 
 type Props = {
-  bookId: string;
+  book: GetBookResponse;
 };
 
-const FeatureCard: React.FC<Props> = ({ bookId }) => {
-  const { data: book } = useBook({ params: { bookId } });
+const FeatureCard: React.FC<Props> = ({ book }) => {
+  // const { data: book } = useBook({ params: { bookId } });
 
   const imageUrl = getImageUrl({ format: 'webp', height: 96, imageId: book.image.id, width: 96 });
   const authorImageUrl = getImageUrl({ format: 'webp', height: 32, imageId: book.author.image.id, width: 32 });
 
   return (
-    <_Wrapper to={`/books/${bookId}`}>
+    <_Wrapper to={`/books/${book.id}`}>
       {imageUrl != null && (
         <_ImgWrapper>
           <Image alt={book.image.alt} height={96} objectFit="cover" src={imageUrl} width={96} />
@@ -84,12 +84,4 @@ const FeatureCard: React.FC<Props> = ({ bookId }) => {
   );
 };
 
-const FeatureCardWithSuspense: React.FC<Props> = (props) => {
-  return (
-    <Suspense fallback={null}>
-      <FeatureCard {...props} />
-    </Suspense>
-  );
-};
-
-export { FeatureCardWithSuspense as FeatureCard };
+export { FeatureCard };

@@ -1,7 +1,8 @@
 import { NavigateNext } from '@mui/icons-material';
-import { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+import type { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
 
 import { Box } from '../../../foundation/components/Box';
 import { Flex } from '../../../foundation/components/Flex';
@@ -11,7 +12,6 @@ import { Spacer } from '../../../foundation/components/Spacer';
 import { Text } from '../../../foundation/components/Text';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
 import { getImageUrl } from '../../../lib/image/getImageUrl';
-import { useBook } from '../../book/hooks/useBook';
 
 const _Wrapper = styled.li`
   width: 100%;
@@ -38,11 +38,11 @@ const _AvatarWrapper = styled.div`
 `;
 
 type Props = {
-  bookId: string;
+  book: GetBookResponse;
 };
 
-const RankingCard: React.FC<Props> = ({ bookId }) => {
-  const { data: book } = useBook({ params: { bookId } });
+const RankingCard: React.FC<Props> = ({ book }) => {
+  // const { data: book } = useBook({ params: { bookId } });
 
   const imageUrl = getImageUrl({ format: 'webp', height: 96, imageId: book.image.id, width: 96 });
   const authorImageUrl = getImageUrl({ format: 'webp', height: 32, imageId: book.author.image.id, width: 32 });
@@ -103,12 +103,4 @@ const RankingCard: React.FC<Props> = ({ bookId }) => {
   );
 };
 
-const RankingCardWithSuspense: React.FC<Props> = (props) => {
-  return (
-    <Suspense fallback={null}>
-      <RankingCard {...props} />
-    </Suspense>
-  );
-};
-
-export { RankingCardWithSuspense as RankingCard };
+export { RankingCard };
