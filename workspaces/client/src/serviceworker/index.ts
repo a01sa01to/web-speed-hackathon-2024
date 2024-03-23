@@ -19,11 +19,10 @@ self.addEventListener('activate', (ev: ExtendableEvent) => {
 });
 
 self.addEventListener('fetch', (ev: FetchEvent) => {
-  ev.respondWith(
-    queue.add(() => onFetch(ev.request), {
-      throwOnTimeout: true,
-    }),
-  );
+  const imgFormat = new URL(ev.request.url).searchParams.get('format');
+  if (imgFormat === 'jxl') {
+    ev.respondWith(queue.add(() => onFetch(ev.request), { throwOnTimeout: true }));
+  }
 });
 
 async function onFetch(request: Request): Promise<Response> {
