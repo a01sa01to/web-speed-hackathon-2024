@@ -6,7 +6,6 @@ import type { GetAuthorRequestParams } from '@wsh-2024/schema/src/api/authors/Ge
 import type { GetAuthorResponse } from '@wsh-2024/schema/src/api/authors/GetAuthorResponse';
 
 import type { DomainSpecificApiClientInterface } from '../../../lib/api/DomainSpecificApiClientInterface';
-import { apiClient } from '../../../lib/api/apiClient';
 
 type AuthorApiClient = DomainSpecificApiClientInterface<{
   fetch: [{ params: GetAuthorRequestParams }, GetAuthorResponse];
@@ -15,18 +14,29 @@ type AuthorApiClient = DomainSpecificApiClientInterface<{
 
 export const authorApiClient: AuthorApiClient = {
   fetch: async ({ params }) => {
-    const response = await apiClient.get<GetAuthorResponse>(inject('/api/v1/authors/:authorId', params));
-    return response.data;
+    const response = await fetch(inject('/api/v1/authors/:authorId', params), {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'GET',
+    }).then<GetAuthorResponse>((res) => (res.ok ? res.json() : Promise.reject(new Error('Failed to fetch'))));
+    return response;
   },
   fetch$$key: (options) => ({
     requestUrl: `/api/v1/authors/:authorId`,
     ...options,
   }),
   fetchList: async ({ query }) => {
-    const response = await apiClient.get<GetAuthorListResponse>(inject('/api/v1/authors', {}), {
-      params: query,
-    });
-    return response.data;
+    const param = new URLSearchParams();
+    if (query.limit) param.append('limit', query.limit.toString());
+    if (query.name) param.append('name', query.name);
+    if (query.offset) param.append('offset', query.offset.toString());
+    let url = `/api/v1/authors`;
+    if (param.toString()) url += `?${param.toString()}`;
+
+    const response = await fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'GET',
+    }).then<GetAuthorListResponse>((res) => (res.ok ? res.json() : Promise.reject(new Error('Failed to fetch'))));
+    return response;
   },
   fetchList$$key: (options) => ({
     requestUrl: `/api/v1/authors`,
