@@ -26,7 +26,7 @@ export const INDEX_HTML = (isAdmin: boolean) => `<!doctype html>
       type="image/x-icon"
     />
     <title>WSH 2024</title>
-    <script type="text/javascript" src="/${isAdmin ? 'admin' : 'client'}.global.js" defer></script>
+    <script type="text/javascript" src="/${isAdmin ? 'admin' : 'client'}.global.js" async></script>
     <style id="tag"></style>
   </head>
   <body>
