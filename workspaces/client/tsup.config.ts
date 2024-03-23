@@ -50,10 +50,6 @@ export default defineConfig(async (): Promise<Options[]> => {
         }),
       ],
       format: 'iife',
-      loader: {
-        '.json?file': 'file',
-        '.wasm': 'binary',
-      },
       metafile: true,
       minify: true,
       outDir: OUTPUT_DIR,
