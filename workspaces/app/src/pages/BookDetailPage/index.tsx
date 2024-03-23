@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai/react';
 import { Suspense, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import type { RouteParams } from 'regexparam';
 import { styled } from 'styled-components';
 import invariant from 'tiny-invariant';
@@ -12,7 +12,6 @@ import { useEpisodeList } from '../../features/episode/hooks/useEpisodeList';
 import { Box } from '../../foundation/components/Box';
 import { Flex } from '../../foundation/components/Flex';
 import { Image } from '../../foundation/components/Image';
-import { Link } from '../../foundation/components/Link';
 import { Separator } from '../../foundation/components/Separator';
 import { Spacer } from '../../foundation/components/Spacer';
 import { Text } from '../../foundation/components/Text';
@@ -82,7 +81,7 @@ const BookDetailPage: React.FC = () => {
 
           <Spacer height={Space * 1} />
 
-          <_AuthorWrapper href={`/authors/${book.author.id}`}>
+          <_AuthorWrapper to={`/authors/${book.author.id}`}>
             {auhtorImageUrl != null && (
               <_AvatarWrapper>
                 <Image alt={book.author.name} height={32} objectFit="cover" src={auhtorImageUrl} width={32} />

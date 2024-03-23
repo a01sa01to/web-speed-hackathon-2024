@@ -1,8 +1,8 @@
 import { animated, useSpring } from '@react-spring/web';
 import { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-import { Link } from '../../../foundation/components/Link';
 import { Color, Radius, Space } from '../../../foundation/styles/variables';
 
 import { FavButton } from './FavButton';
