@@ -13,14 +13,7 @@ const main = async () => {
   // await preloadImages();
 
   const fn = () => {
-    ReactDOM.hydrateRoot(
-      document.getElementById('root')!,
-      <SWRConfig value={{ revalidateIfStale: true, revalidateOnFocus: false, revalidateOnReconnect: false }}>
-        <BrowserRouter>
-          <ClientApp />
-        </BrowserRouter>
-      </SWRConfig>,
-    );
+    ReactDOM.createRoot(document.getElementById('root')!).render(<AdminApp />);
   };
 
   if (document.readyState !== 'loading') {

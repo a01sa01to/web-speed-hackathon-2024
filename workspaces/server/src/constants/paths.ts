@@ -14,7 +14,7 @@ export const IMAGES_PATH = path.resolve(PACKAGE_DIR, './dist/images');
 
 export const CLIENT_STATIC_PATH = path.resolve(WORKSPACE_DIR, './workspaces/client/dist');
 
-export const INDEX_HTML = `<!doctype html>
+export const INDEX_HTML = (isAdmin: boolean) => `<!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
@@ -26,7 +26,7 @@ export const INDEX_HTML = `<!doctype html>
       type="image/x-icon"
     />
     <title>WSH 2024</title>
-    <script type="text/javascript" src="/client.global.js" defer></script>
+    <script type="text/javascript" src="/${isAdmin ? 'admin' : 'client'}.global.js" defer></script>
     <style id="tag"></style>
   </head>
   <body>

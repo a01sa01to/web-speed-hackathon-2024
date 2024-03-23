@@ -11,10 +11,9 @@ import { INDEX_HTML } from '../../constants/paths';
 const app = new Hono();
 
 async function createHTML({ body, styleTags }: { body: string; styleTags: string }): Promise<string> {
-  const content = INDEX_HTML.replaceAll('<div id="root"></div>', `<div id="root">${body}</div>`).replaceAll(
-    '<style id="tag"></style>',
-    styleTags,
-  );
+  const content = INDEX_HTML(false)
+    .replaceAll('<div id="root"></div>', `<div id="root">${body}</div>`)
+    .replaceAll('<style id="tag"></style>', styleTags);
 
   return content;
 }
