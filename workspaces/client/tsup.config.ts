@@ -57,7 +57,7 @@ export default defineConfig(async (): Promise<Options[]> => {
       minify: true,
       outDir: OUTPUT_DIR,
       platform: 'browser',
-      shims: true,
+      shims: false,
       sourcemap: false,
       splitting: true,
       target: ['chrome124'],
