@@ -1,8 +1,8 @@
-import type moment from 'moment-timezone';
+import type { Dayjs } from 'dayjs';
 
 const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
 
-export const getDayOfWeekStr = (date: moment.Moment) => {
+export const getDayOfWeekStr = (date: Dayjs) => {
   const dayOfWeek = date.day();
   const dayStr = days.at(dayOfWeek);
   if (dayStr == null) {

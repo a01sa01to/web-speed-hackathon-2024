@@ -1,4 +1,9 @@
-import moment from 'moment-timezone';
+import dayjs from 'dayjs';
+import tz from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
+dayjs.extend(tz);
+dayjs.tz.setDefault('Asia/Tokyo');
 import { Suspense, useId } from 'react';
 
 import { BookCard } from '../../features/book/components/BookCard';
@@ -17,7 +22,7 @@ import { getDayOfWeekStr } from '../../lib/date/getDayOfWeekStr';
 import { CoverSection } from './internal/CoverSection';
 
 const TopPage: React.FC = () => {
-  const todayStr = getDayOfWeekStr(moment());
+  const todayStr = getDayOfWeekStr(dayjs.tz());
   const { data: release } = useRelease({ params: { dayOfWeek: todayStr } });
   const { data: featureList } = useFeatureList({ query: {} });
   const { data: rankingList } = useRankingList({ query: {} });
