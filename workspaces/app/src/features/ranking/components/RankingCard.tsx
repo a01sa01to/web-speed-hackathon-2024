@@ -9,8 +9,8 @@ import { Image } from '../../../foundation/components/Image';
 import { Separator } from '../../../foundation/components/Separator';
 import { Spacer } from '../../../foundation/components/Spacer';
 import { Text } from '../../../foundation/components/Text';
-import { useImage } from '../../../foundation/hooks/useImage';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
+import { getImageUrl } from '../../../lib/image/getImageUrl';
 import { useBook } from '../../book/hooks/useBook';
 
 const _Wrapper = styled.li`
@@ -44,8 +44,8 @@ type Props = {
 const RankingCard: React.FC<Props> = ({ bookId }) => {
   const { data: book } = useBook({ params: { bookId } });
 
-  const imageUrl = useImage({ height: 96, imageId: book.image.id, width: 96 });
-  const authorImageUrl = useImage({ height: 32, imageId: book.author.image.id, width: 32 });
+  const imageUrl = getImageUrl({ format: 'webp', height: 96, imageId: book.image.id, width: 96 });
+  const authorImageUrl = getImageUrl({ format: 'webp', height: 32, imageId: book.author.image.id, width: 32 });
 
   return (
     <_Wrapper>

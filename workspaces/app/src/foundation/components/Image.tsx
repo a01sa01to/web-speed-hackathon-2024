@@ -11,6 +11,7 @@ const _Image = styled.img<{
   object-fit: ${({ $objectFit }) => $objectFit};
   width: ${({ $width }) => addUnitIfNeeded($width)};
   height: ${({ $height }) => addUnitIfNeeded($height)};
+  aspect-ratio: ${({ $height, $width }) => `${$width} / ${$height}`};
   display: block;
 `;
 

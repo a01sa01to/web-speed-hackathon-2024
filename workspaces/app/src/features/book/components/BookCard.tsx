@@ -5,8 +5,8 @@ import { styled } from 'styled-components';
 import { Flex } from '../../../foundation/components/Flex';
 import { Image } from '../../../foundation/components/Image';
 import { Text } from '../../../foundation/components/Text';
-import { useImage } from '../../../foundation/hooks/useImage';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
+import { getImageUrl } from '../../../lib/image/getImageUrl';
 import { useBook } from '../hooks/useBook';
 
 const _Wrapper = styled(Link)`
@@ -39,8 +39,8 @@ type Props = {
 const BookCard: React.FC<Props> = ({ bookId }) => {
   const { data: book } = useBook({ params: { bookId } });
 
-  const imageUrl = useImage({ height: 128, imageId: book.image.id, width: 192 });
-  const authorImageUrl = useImage({ height: 32, imageId: book.author.image.id, width: 32 });
+  const imageUrl = getImageUrl({ format: 'webp', height: 128, imageId: book.image.id, width: 192 });
+  const authorImageUrl = getImageUrl({ format: 'webp', height: 32, imageId: book.author.image.id, width: 32 });
 
   return (
     <_Wrapper to={`/books/${bookId}`}>
