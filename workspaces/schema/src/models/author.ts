@@ -28,5 +28,6 @@ export const author = sqliteTable(
   },
   (table) => ({
     createdAtIdx: index('created_at_idx').on(table.createdAt),
+    imageIdIdx: index('image_id_idx').on(table.imageId),
   }),
 );

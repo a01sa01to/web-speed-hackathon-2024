@@ -26,5 +26,9 @@ export const ranking = sqliteTable(
       .notNull()
       .$defaultFn(() => new Date().toISOString()),
   },
-  (table) => ({ rankIdx: index('rank_idx').on(table.rank) }),
+  (table) => ({
+    rankIdx: index('rank_idx').on(table.rank),
+    bookIdIdx: index('book_id_idx').on(table.bookId),
+    authorIdIdx: index('author_id_idx').on(table.authorId),
+  }),
 );

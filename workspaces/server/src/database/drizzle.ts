@@ -32,6 +32,30 @@ export function initializeDatabase() {
   sqlite.exec('ALTER TABLE ranking ADD COLUMN author_id TEXT NOT NULL DEFAULT "0";');
   sqlite.exec('UPDATE ranking SET author_id = (SELECT author_id FROM book WHERE book_id = ranking.book_id);');
 
+  // index
+  sqlite.exec('CREATE INDEX IF NOT EXISTS created_at_idx ON author (created_at);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS image_id_idx ON author (image_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS created_at_idx ON book (created_at);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS image_id_idx ON book (image_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS author_id_idx ON book (author_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS release_id_idx ON book (release_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS book_chap_idx ON episode (book_id, chapter);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS author_id_idx ON episode (author_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS book_id_idx ON episode (book_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS image_id_idx ON episode (image_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS episode_page_idx ON episode_page (episode_id, page);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS episode_id_idx ON episode_page (episode_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS book_id_idx ON episode_page (book_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS author_id_idx ON episode_page (author_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS image_id_idx ON episode_page (image_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS created_at_idx ON feature (created_at);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS book_id_idx ON feature (book_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS author_id_idx ON feature (author_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS rank_idx ON ranking (rank);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS book_id_idx ON ranking (book_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS author_id_idx ON ranking (author_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS email_idx ON user (email);');
+
   database = drizzle(sqlite, { schema });
 }
 

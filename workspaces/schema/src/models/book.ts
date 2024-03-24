@@ -31,5 +31,8 @@ export const book = sqliteTable(
   },
   (table) => ({
     createdAtIdx: index('created_at_idx').on(table.createdAt),
+    imageIdIdx: index('image_id_idx').on(table.imageId),
+    authorIdIdx: index('author_id_idx').on(table.authorId),
+    releaseIdIdx: index('release_id_idx').on(table.releaseId),
   }),
 );

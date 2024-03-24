@@ -23,5 +23,9 @@ export const feature = sqliteTable(
       .notNull()
       .$defaultFn(() => new Date().toISOString()),
   },
-  (table) => ({ createdAtIdx: index('created_at_idx').on(table.createdAt) }),
+  (table) => ({
+    createdAtIdx: index('created_at_idx').on(table.createdAt),
+    bookIdIdx: index('book_id_idx').on(table.bookId),
+    authorIdIdx: index('author_id_idx').on(table.authorId),
+  }),
 );
