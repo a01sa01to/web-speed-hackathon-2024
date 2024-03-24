@@ -196,9 +196,22 @@ class EpisodeRepository implements EpisodeRepositoryInterface {
 
   async create(options: { body: PostEpisodeRequestBody }): Promise<Result<PostEpisodeResponse, HTTPException>> {
     try {
+      const author = await getDatabase()
+        .query.book.findFirst({
+          columns: { authorId: true },
+          where(book, { eq }) {
+            return eq(book.id, options.body.bookId);
+          },
+        })
+        .then((book) => book?.authorId);
+
+      if (!author) {
+        throw new HTTPException(500, { message: 'Failed to create episode.' });
+      }
+
       const result = await getDatabase()
         .insert(episode)
-        .values(options.body)
+        .values({ ...options.body, authorId: author })
         .returning({ episodeId: episode.id })
         .execute();
 
@@ -230,12 +243,9 @@ class EpisodeRepository implements EpisodeRepositoryInterface {
         .returning({ episodeId: episode.id })
         .execute();
 
-      if (result[0] == null) {
-        throw new HTTPException(500, { message: `Failed to update episode:${options.params.episodeId}.` });
-      }
       return this.read({
         params: {
-          episodeId: result[0].episodeId,
+          episodeId: result[0]!.episodeId,
         },
       });
     } catch (cause) {

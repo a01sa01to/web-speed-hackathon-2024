@@ -106,9 +106,24 @@ class EpisodePageRepository implements EpisodePageRepositoryInterface {
 
   async create(options: { body: PostEpisodePageRequestBody }): Promise<Result<PostEpisodePageResponse, HTTPException>> {
     try {
+      const episode = await getDatabase().query.episode.findFirst({
+        columns: {
+          authorId: true,
+          bookId: true,
+          id: true,
+        },
+        where(episode, { eq }) {
+          return eq(episode.id, options.body.episodeId);
+        },
+      });
+
+      if (!episode) {
+        throw new HTTPException(404, { message: `Episode:${options.body.episodeId} is not found` });
+      }
+
       const result = await getDatabase()
         .insert(episodePage)
-        .values(options.body)
+        .values({ ...options.body, authorId: episode.authorId, bookId: episode.bookId })
         .returning({ episodePageId: episodePage.id })
         .execute();
 
