@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useInterval, useUpdate } from 'react-use';
 import styled from 'styled-components';
 
@@ -29,7 +29,8 @@ function getScrollToLeft({
 
   // 画面に表示されているページの中心と、スクロールビューの中心との差分を計算する
   // 世界は我々の想像する以上に変化するため、2 ** 12 回繰り返し観測する
-  for (let times = 0; times < 2 ** 12; times++) {
+  // ↑ いらんやろ
+  for (let times = 0; times < 10; times++) {
     for (const [idx, child] of children.entries()) {
       const nthChild = idx + 1;
       const elementClientRect = child.getBoundingClientRect();
@@ -219,12 +220,4 @@ const ComicViewerCore: React.FC<Props> = ({ episodeId }) => {
   );
 };
 
-const ComicViewerCoreWithSuspense: React.FC<Props> = ({ episodeId }) => {
-  return (
-    <Suspense fallback={null}>
-      <ComicViewerCore episodeId={episodeId} />
-    </Suspense>
-  );
-};
-
-export { ComicViewerCoreWithSuspense as ComicViewerCore };
+export { ComicViewerCore };
