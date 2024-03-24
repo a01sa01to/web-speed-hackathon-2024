@@ -50,6 +50,7 @@ type Props = {
   pt?: number;
   px?: number;
   py?: number;
+  style?: CSS.Properties;
 };
 
 export const Flex: React.FC<Props> = ({
@@ -69,6 +70,7 @@ export const Flex: React.FC<Props> = ({
   pt,
   px,
   py,
+  style,
 }) => {
   return (
     <_Flex
@@ -87,6 +89,7 @@ export const Flex: React.FC<Props> = ({
       $px={px}
       $py={py}
       as={as}
+      style={style}
     >
       {children}
     </_Flex>

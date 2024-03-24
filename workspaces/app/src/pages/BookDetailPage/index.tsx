@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai/react';
-import { Suspense, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import type { RouteParams } from 'regexparam';
 import { styled } from 'styled-components';
@@ -53,8 +53,14 @@ const BookDetailPage: React.FC = () => {
 
   const [isFavorite, toggleFavorite] = useAtom(FavoriteBookAtomFamily(bookId));
 
-  const bookImageUrl = getImageUrl({ format: 'webp', height: 256, imageId: book.image.id, width: 192 });
-  const auhtorImageUrl = getImageUrl({ format: 'webp', height: 32, imageId: book.author.image.id, width: 32 });
+  const [bookImageUrl, setBookImageUrl] = useState<string | null>(null);
+  const [authorImageUrl, setAuthorImageUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!book) return;
+    setBookImageUrl(getImageUrl({ format: 'webp', height: 256, imageId: book.image.id, width: 192 }));
+    setAuthorImageUrl(getImageUrl({ format: 'webp', height: 32, imageId: book.author.image.id, width: 32 }));
+  }, [book]);
 
   const handleFavClick = useCallback(() => {
     toggleFavorite();
@@ -64,31 +70,37 @@ const BookDetailPage: React.FC = () => {
 
   return (
     <Box height="100%" position="relative" px={Space * 2}>
-      <_HeadingWrapper aria-label="作品情報">
-        {bookImageUrl != null && (
-          <Image alt={book.name} height={256} objectFit="cover" src={bookImageUrl} width={192} />
+      <_HeadingWrapper aria-label="作品情報" style={{ minHeight: '256px' }}>
+        {book && bookImageUrl ? (
+          <Image alt={book.name} height={256} loading="eager" objectFit="cover" src={bookImageUrl} width={192} />
+        ) : (
+          <div style={{ height: '256px', width: '192px' }} />
         )}
         <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-end">
           <Box>
             <Text color={Color.MONO_100} typography={Typography.NORMAL20} weight="bold">
-              {book.name}
+              {book && book.name}
             </Text>
             <Spacer height={Space * 1} />
             <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL14}>
-              {book.description}
+              {book && book.description}
             </Text>
           </Box>
 
           <Spacer height={Space * 1} />
 
-          <_AuthorWrapper to={`/authors/${book.author.id}`}>
-            {auhtorImageUrl != null && (
+          <_AuthorWrapper to={book ? `/authors/${book.author.id}` : '#'}>
+            {authorImageUrl != null && (
               <_AvatarWrapper>
-                <Image alt={book.author.name} height={32} objectFit="cover" src={auhtorImageUrl} width={32} />
+                {book && authorImageUrl ? (
+                  <Image alt={book.author.name} height={32} objectFit="cover" src={authorImageUrl} width={32} />
+                ) : (
+                  <div style={{ height: '32px', width: '32px' }} />
+                )}
               </_AvatarWrapper>
             )}
             <Text color={Color.MONO_100} typography={Typography.NORMAL14}>
-              {book.author.name}
+              {book && book.author.name}
             </Text>
           </_AuthorWrapper>
         </Flex>
@@ -105,10 +117,9 @@ const BookDetailPage: React.FC = () => {
 
       <section aria-label="エピソード一覧">
         <Flex align="center" as="ul" direction="column" justify="center">
-          {episodeList.map((episode) => (
-            <EpisodeListItem key={episode.id} bookId={bookId} episodeId={episode.id} />
-          ))}
-          {episodeList.length === 0 && (
+          {episodeList &&
+            episodeList.map((episode) => <EpisodeListItem key={episode.id} bookId={bookId} episode={episode} />)}
+          {episodeList && episodeList.length === 0 && (
             <>
               <Spacer height={Space * 2} />
               <Text color={Color.MONO_100} typography={Typography.NORMAL14}>
@@ -122,12 +133,13 @@ const BookDetailPage: React.FC = () => {
   );
 };
 
-const BookDetailPageWithSuspense: React.FC = () => {
-  return (
-    <Suspense fallback={null}>
-      <BookDetailPage />
-    </Suspense>
-  );
-};
+// const BookDetailPageWithSuspense: React.FC = () => {
+//   return (
+//     <Suspense fallback={null}>
+//       <BookDetailPage />
+//     </Suspense>
+//   );
+// };
 
-export { BookDetailPageWithSuspense as BookDetailPage };
+export { BookDetailPage };
+// export { BookDetailPageWithSuspense as BookDetailPage };

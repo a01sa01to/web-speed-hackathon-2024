@@ -1,4 +1,4 @@
-import { Suspense, useId } from 'react';
+import { Suspense, useEffect, useId, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import type { RouteParams } from 'regexparam';
 import { styled } from 'styled-components';
@@ -37,24 +37,33 @@ const AuthorDetailPage: React.FC = () => {
 
   const { data: author } = useAuthor({ params: { authorId } });
 
-  const imageUrl = getImageUrl({ format: 'webp', height: 128, imageId: author.image.id, width: 128 });
   const bookListA11yId = useId();
+
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  useEffect(() => {
+    if (!author) return;
+    setImageUrl(getImageUrl({ format: 'webp', height: 128, imageId: author.image.id, width: 128 }));
+  }, [author]);
 
   return (
     <Box height="100%" px={Space * 2}>
       <_HeadingWrapper aria-label="作者情報">
         {imageUrl != null && (
           <_AuthorImageWrapper>
-            <Image key={author.id} alt={author.name} height={128} objectFit="cover" src={imageUrl} width={128} />
+            {author && imageUrl ? (
+              <Image key={author.id} alt={author.name} height={128} objectFit="cover" src={imageUrl} width={128} />
+            ) : (
+              <div style={{ height: '128px', width: '128px' }} />
+            )}
           </_AuthorImageWrapper>
         )}
 
         <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
           <Text color={Color.MONO_100} typography={Typography.NORMAL20} weight="bold">
-            {author.name}
+            {author && author.name}
           </Text>
           <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL14}>
-            {author.description}
+            {author && author.description}
           </Text>
         </Flex>
       </_HeadingWrapper>
@@ -69,10 +78,8 @@ const AuthorDetailPage: React.FC = () => {
         <Spacer height={Space * 2} />
 
         <Flex align="center" as="ul" direction="column" justify="center">
-          {author.books.map((book) => (
-            <BookListItem key={book.id} bookId={book.id} />
-          ))}
-          {author.books.length === 0 && (
+          {author && author.books.map((book) => <BookListItem key={book.id} book={book} />)}
+          {author && author.books.length === 0 && (
             <>
               <Spacer height={Space * 2} />
               <Text color={Color.MONO_100} typography={Typography.NORMAL14}>

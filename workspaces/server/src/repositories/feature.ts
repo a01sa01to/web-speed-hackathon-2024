@@ -31,6 +31,7 @@ class FeatureRepository implements FeatureRepositoryInterface {
               description: true,
               id: true,
               name: true,
+              nameRuby: true,
             },
             with: {
               author: {
@@ -54,6 +55,14 @@ class FeatureRepository implements FeatureRepositoryInterface {
                   description: true,
                   id: true,
                   name: true,
+                },
+                with: {
+                  image: {
+                    columns: {
+                      alt: true,
+                      id: true,
+                    },
+                  },
                 },
               },
               image: {

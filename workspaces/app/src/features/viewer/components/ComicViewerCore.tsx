@@ -210,9 +210,10 @@ const ComicViewerCore: React.FC<Props> = ({ episodeId }) => {
   return (
     <_Container ref={containerRef}>
       <_Wrapper ref={scrollViewRef} $paddingInline={viewerPaddingInline} $pageWidth={pageWidth}>
-        {episode.pages.map((page) => {
-          return <ComicViewerPage key={page.id} pageImageId={page.image.id} />;
-        })}
+        {episode &&
+          episode.pages.map((page) => {
+            return <ComicViewerPage key={page.id} pageImageId={page.image.id} />;
+          })}
       </_Wrapper>
     </_Container>
   );

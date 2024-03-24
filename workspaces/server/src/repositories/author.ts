@@ -50,6 +50,7 @@ class AuthorRepository implements AuthorRepositoryInterface {
               description: true,
               id: true,
               name: true,
+              nameRuby: true,
             },
             with: {
               episodes: {
@@ -111,6 +112,7 @@ class AuthorRepository implements AuthorRepositoryInterface {
               description: true,
               id: true,
               name: true,
+              nameRuby: true,
             },
             with: {
               episodes: {

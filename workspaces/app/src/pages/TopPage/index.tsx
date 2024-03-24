@@ -4,7 +4,7 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 dayjs.extend(tz);
 dayjs.tz.setDefault('Asia/Tokyo');
-import { Suspense, useId } from 'react';
+import { useId } from 'react';
 
 import { BookCard } from '../../features/book/components/BookCard';
 import { FeatureCard } from '../../features/feature/components/FeatureCard';
@@ -43,10 +43,8 @@ const TopPage: React.FC = () => {
           </Text>
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
-            <Flex align="stretch" direction="row" gap={Space * 2} justify="flex-start">
-              {featureList.map((feature) => (
-                <FeatureCard key={feature.id} book={feature.book} />
-              ))}
+            <Flex align="stretch" direction="row" gap={Space * 2} justify="flex-start" style={{ height: '206px' }}>
+              {featureList && featureList.map((feature) => <FeatureCard key={feature.id} book={feature.book} />)}
             </Flex>
           </Box>
         </Box>
@@ -59,10 +57,8 @@ const TopPage: React.FC = () => {
           </Text>
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="hidden" overflowY="hidden">
-            <Flex align="center" as="ul" direction="column" justify="center">
-              {rankingList.map((ranking) => (
-                <RankingCard key={ranking.id} book={ranking.book} />
-              ))}
+            <Flex align="center" as="ul" direction="column" justify="center" style={{ minHeight: '5000px' }}>
+              {rankingList && rankingList.map((ranking) => <RankingCard key={ranking.id} book={ranking.book} />)}
             </Flex>
           </Box>
         </Box>
@@ -75,10 +71,8 @@ const TopPage: React.FC = () => {
           </Text>
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
-            <Flex align="stretch" gap={Space * 2} justify="flex-start">
-              {release.books.map((book) => (
-                <BookCard key={book.id} book={book} />
-              ))}
+            <Flex align="stretch" gap={Space * 2} justify="flex-start" style={{ height: '244px' }}>
+              {release && release.books.map((book) => <BookCard key={book.id} book={book} />)}
             </Flex>
           </Box>
         </Box>
@@ -87,12 +81,4 @@ const TopPage: React.FC = () => {
   );
 };
 
-const TopPageWithSuspense: React.FC = () => {
-  return (
-    <Suspense fallback={null}>
-      <TopPage />
-    </Suspense>
-  );
-};
-
-export { TopPageWithSuspense as TopPage };
+export { TopPage };

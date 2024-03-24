@@ -48,6 +48,7 @@ class ReleaseRepository implements ReleaseRepositoryInterface {
               description: true,
               id: true,
               name: true,
+              nameRuby: true,
             },
             with: {
               author: {
@@ -71,6 +72,14 @@ class ReleaseRepository implements ReleaseRepositoryInterface {
                   description: true,
                   id: true,
                   name: true,
+                },
+                with: {
+                  image: {
+                    columns: {
+                      alt: true,
+                      id: true,
+                    },
+                  },
                 },
               },
               image: {

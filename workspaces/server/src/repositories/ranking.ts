@@ -32,6 +32,7 @@ class RankingRepository implements RankingRepositoryInterface {
               description: true,
               id: true,
               name: true,
+              nameRuby: true,
             },
             with: {
               author: {
@@ -55,6 +56,14 @@ class RankingRepository implements RankingRepositoryInterface {
                   description: true,
                   id: true,
                   name: true,
+                },
+                with: {
+                  image: {
+                    columns: {
+                      alt: true,
+                      id: true,
+                    },
+                  },
                 },
               },
               image: {
