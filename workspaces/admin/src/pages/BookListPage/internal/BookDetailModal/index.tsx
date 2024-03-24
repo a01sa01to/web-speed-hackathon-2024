@@ -19,21 +19,22 @@ import {
 import { Link } from '@tanstack/react-router';
 import { useToggle } from '@uidotdev/usehooks';
 
-import { useBook } from '../../../../features/books/hooks/useBook';
+import type { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
+
 import { useEpisodeList } from '../../../../features/episodes/hooks/useEpisodeList';
 
 import { BookDetailContent } from './BookDetailContent';
 import { BookEditContent } from './BookEditContent';
 
 type Props = {
-  bookId: string;
+  book: GetBookResponse;
   isOpen: boolean;
   onClose: () => void;
 };
 
-export const BookDetailModal: React.FC<Props> = ({ bookId, isOpen, onClose }) => {
-  const { data: episodeList } = useEpisodeList({ bookId });
-  const { data: book } = useBook({ bookId });
+export const BookDetailModal: React.FC<Props> = ({ book, isOpen, onClose }) => {
+  const { data: episodeList } = useEpisodeList({ bookId: book.id });
+  // const { data: book } = useBook({ bookId });
 
   const [isEdit, toggleIEdit] = useToggle(false);
 
@@ -75,7 +76,7 @@ export const BookDetailModal: React.FC<Props> = ({ bookId, isOpen, onClose }) =>
                                 as={Link}
                                 colorScheme="teal"
                                 role="button"
-                                to={`/admin/books/${bookId}/episodes/${episode.id}`}
+                                to={`/admin/books/${book.id}/episodes/${episode.id}`}
                                 variant="solid"
                               >
                                 編集
@@ -107,7 +108,7 @@ export const BookDetailModal: React.FC<Props> = ({ bookId, isOpen, onClose }) =>
               colorScheme="teal"
               mt={4}
               role="button"
-              to={`/admin/books/${bookId}/episodes/new`}
+              to={`/admin/books/${book.id}/episodes/new`}
               variant="solid"
             >
               エピソードを追加
