@@ -13,6 +13,7 @@ export const feature = sqliteTable(
 
     // relations
     bookId: text('book_id').notNull(),
+    authorId: text('author_id').notNull(),
 
     // metadata
     createdAt: text('created_at')

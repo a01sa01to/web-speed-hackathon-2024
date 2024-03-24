@@ -223,16 +223,8 @@ class BookRepository implements BookRepositoryInterface {
         await tx.delete(book).where(eq(book.id, options.params.bookId)).execute();
         await tx.delete(feature).where(eq(feature.bookId, options.params.bookId)).execute();
         await tx.delete(ranking).where(eq(ranking.bookId, options.params.bookId)).execute();
-        const deleteEpisodeRes = await tx
-          .delete(episode)
-          .where(eq(episode.bookId, options.params.bookId))
-          .returning({
-            episodeId: episode.id,
-          })
-          .execute();
-        for (const episode of deleteEpisodeRes) {
-          await tx.delete(episodePage).where(eq(episodePage.episodeId, episode.episodeId)).execute();
-        }
+        await tx.delete(episode).where(eq(episode.bookId, options.params.bookId));
+        await tx.delete(episodePage).where(eq(episodePage.bookId, options.params.bookId)).execute();
       });
 
       return ok({});

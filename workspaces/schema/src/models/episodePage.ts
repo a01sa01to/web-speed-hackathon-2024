@@ -16,6 +16,8 @@ export const episodePage = sqliteTable(
 
     // relations
     episodeId: text('episode_id').notNull(),
+    bookId: text('book_id').notNull(),
+    authorId: text('author_id').notNull(),
     imageId: text('image_id').notNull(),
 
     // metadata

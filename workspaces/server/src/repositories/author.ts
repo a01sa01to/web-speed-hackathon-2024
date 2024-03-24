@@ -205,27 +205,11 @@ class AuthorRepository implements AuthorRepositoryInterface {
     try {
       await getDatabase().transaction(async (tx) => {
         await tx.delete(author).where(eq(author.id, options.params.authorId)).execute();
-        const deleteBookRes = await tx
-          .delete(book)
-          .where(eq(book.authorId, options.params.authorId))
-          .returning({
-            bookId: book.id,
-          })
-          .execute();
-        for (const book of deleteBookRes) {
-          await tx.delete(feature).where(eq(feature.bookId, book.bookId)).execute();
-          await tx.delete(ranking).where(eq(ranking.bookId, book.bookId)).execute();
-          const deleteEpisodeRes = await tx
-            .delete(episode)
-            .where(eq(episode.bookId, book.bookId))
-            .returning({
-              episodeId: episode.id,
-            })
-            .execute();
-          for (const episode of deleteEpisodeRes) {
-            await tx.delete(episodePage).where(eq(episodePage.episodeId, episode.episodeId)).execute();
-          }
-        }
+        await tx.delete(book).where(eq(book.authorId, options.params.authorId)).execute();
+        await tx.delete(feature).where(eq(feature.authorId, options.params.authorId)).execute();
+        await tx.delete(ranking).where(eq(ranking.authorId, options.params.authorId)).execute();
+        await tx.delete(episode).where(eq(episode.authorId, options.params.authorId)).execute();
+        await tx.delete(episodePage).where(eq(episodePage.authorId, options.params.authorId)).execute();
       });
 
       return ok({});

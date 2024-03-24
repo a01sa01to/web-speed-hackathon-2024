@@ -18,6 +18,7 @@ export const episode = sqliteTable(
     chapter: integer('chapter').notNull(),
 
     // relations
+    authorId: text('author_id').notNull(),
     bookId: text('book_id').notNull(),
     imageId: text('image_id').notNull(),
 
