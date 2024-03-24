@@ -106,12 +106,14 @@ const BookDetailPage: React.FC = () => {
         </Flex>
       </_HeadingWrapper>
 
-      <BottomNavigator
-        bookId={bookId}
-        isFavorite={isFavorite}
-        latestEpisodeId={latestEpisode?.id ?? ''}
-        onClickFav={handleFavClick}
-      />
+      {latestEpisode && (
+        <BottomNavigator
+          bookId={bookId}
+          isFavorite={isFavorite}
+          latestEpisodeId={latestEpisode.id ?? ''}
+          onClickFav={handleFavClick}
+        />
+      )}
 
       <Separator />
 
