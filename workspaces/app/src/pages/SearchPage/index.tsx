@@ -29,16 +29,12 @@ const SearchPage: React.FC = () => {
 
   return (
     <Box px={Space * 2}>
-      {books ? (
-        <Input disabled={!isClient} onChange={onChangedInput} />
-      ) : (
-        <div style={{ height: '1rem', padding: '8px', width: 'calc(100% - 16px)' }}>Loading...</div>
-      )}
+      <Input disabled={!isClient} onChange={onChangedInput} />
       <Box aria-labelledby={searchResultsA11yId} as="section" maxWidth="100%" py={Space * 2} width="100%">
         <Text color={Color.MONO_100} id={searchResultsA11yId} typography={Typography.NORMAL20} weight="bold">
           検索結果
         </Text>
-        {books && keyword !== '' && <SearchResult books={books} keyword={keyword} />}
+        {keyword !== '' && <SearchResult books={books} keyword={keyword} />}
       </Box>
     </Box>
   );
