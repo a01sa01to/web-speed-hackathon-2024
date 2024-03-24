@@ -21,8 +21,6 @@ import { useFormik } from 'formik';
 import { useId, useMemo, useState } from 'react';
 import { create } from 'zustand';
 
-import type { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
-
 import { useBookList } from '../../features/books/hooks/useBookList';
 import { isContains } from '../../lib/filter/isContains';
 
@@ -51,7 +49,7 @@ type BookModalState =
     }
   | {
       mode: typeof BookModalMode.Detail;
-      params: { book: GetBookResponse };
+      params: { bookId: string };
     }
   | {
       mode: typeof BookModalMode.Create;
@@ -61,7 +59,7 @@ type BookModalState =
 type BookModalAction = {
   close: () => void;
   openCreate: () => void;
-  openDetail: (book: GetBookResponse) => void;
+  openDetail: (bookId: string) => void;
 };
 
 export const BookListPage: React.FC = () => {
@@ -121,8 +119,8 @@ export const BookListPage: React.FC = () => {
         openCreate() {
           set({ mode: BookModalMode.Create, params: {} });
         },
-        openDetail(book) {
-          set({ mode: BookModalMode.Detail, params: { book } });
+        openDetail(bookId) {
+          set({ mode: BookModalMode.Detail, params: { bookId } });
         },
       },
     }));
@@ -220,7 +218,7 @@ export const BookListPage: React.FC = () => {
                 {filteredBookList.map((book) => (
                   <Tr key={book.id}>
                     <Td textAlign="center" verticalAlign="middle">
-                      <Button colorScheme="teal" onClick={() => modalState.openDetail(book)} variant="solid">
+                      <Button colorScheme="teal" onClick={() => modalState.openDetail(book.id)} variant="solid">
                         詳細
                       </Button>
                     </Td>
@@ -245,7 +243,7 @@ export const BookListPage: React.FC = () => {
       </Stack>
 
       {modalState.mode === BookModalMode.Detail ? (
-        <BookDetailModal isOpen book={modalState.params.book} onClose={() => modalState.close()} />
+        <BookDetailModal isOpen bookId={modalState.params.bookId} onClose={() => modalState.close()} />
       ) : null}
       {modalState.mode === BookModalMode.Create ? <CreateBookModal isOpen onClose={() => modalState.close()} /> : null}
     </>
