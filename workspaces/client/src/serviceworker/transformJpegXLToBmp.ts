@@ -4,9 +4,14 @@ import 'jimp';
 declare const Jimp: typeof import('jimp');
 
 export async function transformJpegXLToBmp(response: Response): Promise<Response> {
-  const jsquashWasmBinary = await fetch('/assets/jxl_dec.wasm', { cache: 'force-cache' }).then((res) =>
-    res.arrayBuffer(),
-  );
+  const cacheStore = await caches.open('jsquash');
+  if (!(await cacheStore.match('/assets/jxl_dec.wasm'))) {
+    await cacheStore.put(
+      '/assets/jxl_dec.wasm',
+      new Response(await fetch('/assets/jxl_dec.wasm').then((res) => res.arrayBuffer())),
+    );
+  }
+  const jsquashWasmBinary = await cacheStore.match('/assets/jxl_dec.wasm').then((res) => res!.arrayBuffer());
   const { decode } = await jsquashInit(undefined, {
     locateFile: () => {},
     wasmBinary: jsquashWasmBinary,
